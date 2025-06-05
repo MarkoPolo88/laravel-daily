@@ -19,7 +19,7 @@ test('homepage contains table product', function () {
 
     actingAs($this->user)
         ->get('/products')
-        ->assertStatus(200)
+        ->assertOk()
         ->assertSeeText($product->name);
 });
 
@@ -28,6 +28,12 @@ test('homepage contains products in order', function () {
 
     actingAs($this->user)
         ->get('/products')
-        ->assertStatus(200)
+        ->assertOk()
         ->assertSeeInOrder([$product1->name, $product2->name]);
+});
+
+test('guest cannot access products page', function () {
+    actingAs($this->user)
+        ->get('/products/create')
+        ->assertForbidden();
 });
