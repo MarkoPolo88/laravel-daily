@@ -20,5 +20,14 @@ test('homepage contains table product', function () {
     actingAs($this->user)
         ->get('/products')
         ->assertStatus(200)
-        ->assertSee($product->name);
+        ->assertSeeText($product->name);
+});
+
+test('homepage contains products in order', function () {
+    [$product1, $product2] = Product::factory(2)->create();
+
+    actingAs($this->user)
+        ->get('/products')
+        ->assertStatus(200)
+        ->assertSeeInOrder([$product1->name, $product2->name]);
 });
